@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>配置管理</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/header"}
+
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('Index/index')}">系统</a>
+                    </li>
+                                        <li class="active">配置管理</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('conf/add')}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="6%">ID</th>
+                                <th class="text-center">中文名称</th>
+                                <th class="text-center">英文名称</th>
+                                <th class="text-center">默认值</th>
+                                <th class="text-center">可选值</th>
+                                <th class="text-center">展示分类</th>
+                                <th class="text-center">配置类型</th>
+                                <th class="text-center" width="14%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="confRes" id="vo"}
+                            <tr>
+                                <td align="center">{$vo.id}</td>
+                                <td align="center">{$vo.cname}</td>
+                                <td align="center">{$vo.ename}</td>
+                                <td align="center">{if condition="$vo.value neq ''"}{$vo.value}{else}暂无默认值{/if}</td>
+                                <td align="center">{if condition="$vo.values neq ''"}{$vo.values}{else}暂无可选值{/if}</td>
+                                <td align="center">{$vo.dt_type}</td>
+                                <td align="center">{$vo.cf_type}</td>
+                                <td align="center">
+                                    <a href="{:url('Conf/edit',['id'=>$vo['id']])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a href="#" id="del" onClick="warning('确实要删除吗', '{:url('Conf/del',['id'=>$vo['id']])}')" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                    <!--<a href="javascript:;" id="del" val="{$vo.id}" class="btn btn-danger btn-sm shiny">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>-->
+                                </td>
+                            </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <p></p>
+                    {$confRes->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <script src="__ADMIN__/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <!--<script type="text/javascript">
+        $(function () {
+           $("#del").click(function () {
+               var id = $(this).attr("val");
+               $.ajax({
+                   url:"{:url('Conf/del')}",
+                   type:"POST",
+                   data:{id:id},
+                   dataType:"json",
+                   success: function (data, status) {
+                       alert(data)
+                   },
+                   error: function (data, status) {
+                       alert(data)
+                   },
+               });
+           });
+        });
+    </script>-->
+    
+
+
+</body></html>

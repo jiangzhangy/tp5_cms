@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>栏目修改</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <!--layer js-->
+    <script src="__ADMIN__/plugins/layer/layer.js"></script>
+    <!--ueditor js-->
+    <script src="__ADMIN__/plugins/ueditor/ueditor.config.js"></script>
+    <script src="__ADMIN__/plugins/ueditor/ueditor.all.min.js"></script>
+    <script src="__ADMIN__/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <!--uploadify style-->
+    <!--<link href="__ADMIN__/plugins/uploadify/uploadify.css" rel="stylesheet">-->
+    <script src="__ADMIN__/plugins/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#uploadify").uploadify({
+                //指定swf文件
+                'swf': "__ADMIN__/plugins/uploadify/uploadify.swf",
+                //后台处理的页面
+                'uploader': "{:url('Cate/upImg')}",
+                'progressData' : 'speed',
+                //按钮显示的文字
+                'buttonText': '上传文件',
+                //修改按钮风格
+                'buttonClass':'btn btn-blue',
+                //设置上传文件的name值
+                'fileObjName':'img',
+                //显示的高度和宽度，默认 height 30；width 120
+                //'height': 15,
+                //'width': 80,
+                //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                'fileTypeDesc': 'Image Files',
+                //上传成功回调函数
+                'onUploadSuccess':function (file,data,response) {
+                    var cateImgSrc = "__ADMIN__/../../admin_uploads/cate_img/"+data;
+                    var cateImg = "<img height='80px;' src='"+cateImgSrc+"'>";
+                    $("input[name='img']").val(data);
+                    $("#img-show").show();
+                    $("#cateImg").html(cateImg);
+                }
+
+            });
+            $("#uploadify-button").prepend("<i class='fa fa-upload'></i>");
+            $("#uploadify-button").removeAttr('style');
+        });
+    </script>
+
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/header"}
+
+	<!-- /头部 -->
+
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('Index/index')}">系统</a>
+                    </li>
+                                        <li>
+                        <a href="{:url('Cate/lst')}">栏目管理</a>
+                    </li>
+                                        <li class="active">添加栏目</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="{$cateDetail.id}">
+                        <div class="widget-body">
+                            <div class="widget-main ">
+                                <div class="tabbable">
+                                    <ul class="nav nav-tabs tabs-flat" id="myTab11">
+                                        <li class="active">
+                                            <a data-toggle="tab" href="#home11">
+                                                基本信息
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a data-toggle="tab" href="#profile11">
+                                                SEO信息
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a data-toggle="tab" href="#profile12">
+                                                栏目内容
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content tabs-flat">
+                                        <div id="home11" class="tab-pane in active">
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">所属模型</label>
+                                                <div class="col-sm-6">
+                                                    <select name="model_id">
+                                                        <option value="1" {if condition="$cateDetail['model_id'] eq 1"}selected{/if}>文章模型</option>
+                                                        <option value="2" {if condition="$cateDetail['model_id'] eq 2"}selected{/if}>电影模型</option>
+                                                    </select>
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">上级栏目</label>
+                                                <div class="col-sm-6">
+                                                    <select name="pid">
+                                                        <option value="0">顶级栏目</option>
+                                                        {volist name="cateRes" id="vo"}
+                                                        <option value="{$vo.id}" {if condition="$vo.id eq $cateDetail['pid']"}selected{/if}>{$vo['level']|str_repeat='--',###}{$vo.cate_name}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目名称</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" placeholder="" name="cate_name"  type="text" value="{$cateDetail['cate_name']}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">是否隐藏栏目</label>
+                                                <div class="col-xs-6" style="padding-top: 8px;">
+                                                    <label>
+                                                        <input class="checkbox-slider colored-blue" type="checkbox" {if condition="$cateDetail['status'] eq 0"}checked{/if} name="status" value="0">
+                                                        <span class="text"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目图片</label>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <span id="uploadify"></span>
+                                                        <input type="hidden" name="img" value="{$cateDetail.img}" >
+                                                    </label>
+                                                    <label>
+                                                        <div id="cancel" class="uploadify-button btn btn-blue" style="padding-top: 4px;">
+                                                            <span class="uploadify-button-text"><i class="fa fa-repeat"></i> 取消上传</span></div>
+                                                    </label>
+                                                    {if condition="$cateDetail['img'] neq ''"}
+                                                    <label>
+                                                        <img src="__ADMIN__/../../admin_uploads/cate_img/{$cateDetail['img']}" width="120px;">
+                                                    </label>
+                                                    {else}暂无图片
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="img-show" style="display: none;">
+                                                <label for="" class="col-sm-2 control-label no-padding-right"></label>
+                                                <div class="col-xs-6">
+                                                    <label id="cateImg">
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目属性</label>
+                                                <div class="control-group">
+                                                    <div class="radio" style="float: left;padding-left: 10px;">
+                                                        <label>
+                                                            <input name="cate_attr" type="radio"  value="1" {if condition="$cateDetail['cate_attr'] eq 1"}checked="checked"{/if}>
+                                                            <span class="text">列表页栏目（可以发布文章）</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio" style="float: left;padding-left: 10px;">
+                                                        <label>
+                                                            <input name="cate_attr" type="radio" class="inverted" value="2" {if condition="$cateDetail['cate_attr'] eq 2"}checked="checked"{/if}>
+                                                            <span class="text">封面频道栏目</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio" style="float: left;padding-left: 10px;">
+                                                        <label>
+                                                            <input name="cate_attr" type="radio" class="inverted" value="3" {if condition="$cateDetail['cate_attr'] eq 3"}checked="checked"{/if}>
+                                                            <span class="text">外链栏目</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">列表页模板</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" placeholder="" name="list_tmp" required="" type="text" value="{$cateDetail.list_tmp}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">频道页模板</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" placeholder="" name="index_tmp" required="" type="text" value="{$cateDetail.index_tmp}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">内容页模板</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" placeholder="" name="article_tmp" required="" type="text" value="{$cateDetail.article_tmp}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 必填</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">外链地址</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control" name="links" placeholder="" type="text" value="{$cateDetail.links}">
+                                                </div>
+                                                <p class="help-block col-sm-4 red">* 如果是栏目属性为外链栏目（以‘https://或者http://开头）</p>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div id="profile11" class="tab-pane">
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目标题</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control"  placeholder="" name="title" type="text" value="{$cateDetail.title}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目关键字</label>
+                                                <div class="col-sm-6">
+                                                    <input class="form-control"  placeholder="" name="keywords" type="text" value="{$cateDetail.keywords}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2 control-label no-padding-right">栏目描述</label>
+                                                <div class="col-sm-6">
+                                                    <textarea class="form-control"  name="desc">{$cateDetail.desc}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="profile12" class="tab-pane">
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <textarea   name="content" id="content">{$cateDetail.content}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top: 10px;">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <!--Ueditor Scripts-->
+    <script type="text/javascript">
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        UE.getEditor('content',{toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+            'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+            'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+            'directionalityltr', 'directionalityrtl', 'indent', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+            'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'webapp', 'pagebreak', 'template', 'background', '|',
+            'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+            'print', 'preview', 'searchreplace', 'drafts', 'help'
+        ]],initialFrameWidth:1500,initialFrameHeight:400});
+
+        //取消图片上传
+        $("#cancel").click(function () {
+            var imgId = {$cateDetail.id};
+            var imgUrl = $("input[name='img']").val();
+            if(!imgUrl){
+                layer.msg('你没有上传图片...', {icon: 2});
+                return false;
+            }
+            layer.confirm('确定撤销吗?', {icon: 3, title:'提示'}, function(index){
+                //do something
+                $("#img-show").hide();
+                $("input[name='img']").val('');
+                $.ajax({
+                    url: "{:url('Cate/cancel')}",
+                    dataType:"json",
+                    data: {imgUrl:imgUrl,imgId:imgId},
+                    type: "POST",
+                    success: function (data) {
+                        var obj = JSON.parse(data);
+                        if (obj.data){
+                            layer.msg('撤销成功！', {icon: 1});
+                        }else{
+                            layer.msg('撤销失败！', {icon: 1});
+                        }
+                    },
+                    error : function (data) {
+                        layer.msg('遇到未知错误！', {icon: 2});
+                    }
+                });
+
+                layer.close(index);
+            });
+        });
+
+    </script>
+
+
+
+</body></html>

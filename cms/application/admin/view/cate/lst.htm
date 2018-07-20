@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>栏目列表</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="__ADMIN__/style/bootstrap.css" rel="stylesheet">
+    <link href="__ADMIN__/style/font-awesome.css" rel="stylesheet">
+    <link href="__ADMIN__/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__ADMIN__/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="__ADMIN__/style/demo.css" rel="stylesheet">
+    <link href="__ADMIN__/style/typicons.css" rel="stylesheet">
+    <link href="__ADMIN__/style/animate.css" rel="stylesheet">
+    <!--展开栏目样式-->
+    <style type="text/css">
+        .open{
+            border: 1px solid #ccc;
+            padding: 0 3px 03px;
+            cursor: pointer;
+        }
+    </style>
+    
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/header"}
+
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			            <!-- Page Sidebar -->
+            {include file="common/left"}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="{:url('Index/index')}">系统</a>
+                    </li>
+                                        <li class="active">用户列表</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<button type="button" tooltip="添加栏目" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '{:url('Cate/add')}'"> <i class="fa fa-plus"></i> Add
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <form action="{:url('Cate/delSort')}" method="post">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr pid="0">
+                                <th class="text-center" width="2%">
+                                    <label>
+                                    <input id="checkAll" type="checkbox" value="" name="" class="colored-blue">
+                                    <span class="text"></span>
+                                    </label>
+                                </th>
+                                <th class="text-center"width="4%">ID</th>
+                                <th class="text-center"width="2%">+</th>
+                                <th class="text-center">栏目名称</th>
+                                <th class="text-center" width="10%">状态</th>
+                                <th class="text-center" width="10%">属性</th>
+                                <th class="text-center" width="10%">所属模型</th>
+                                <th class="text-center" width="4%">排序</th>
+                                <th class="text-center" width="12%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="cateRes" id="vo"}
+                           <tr id="{$vo.id}" pid="{$vo.pid}">
+                             <td align="center">
+                                 <label>
+                                     <input cateSon="{$vo.id}" id="id[{$vo.id}]" type="checkbox" value="{$vo.id}" name="checked[]" class="colored-blue">
+                                     <span class="text"></span>
+                                 </label>
+                             </td>
+                             <td align="center">{$vo.id}</td>
+                               <td align="center"><span class="open">+</span></td>
+                             <td >{$vo.level|str_repeat="———",###}{$vo.cate_name}
+                                 <a href="{:url('Cate/add',['cate_id'=>$vo['id']])}" style="float: right;" class="btn btn-sm btn-azure btn-addon"><i class="fa fa-plus"></i>添加子栏目</a></td>
+                             <td align="center">
+                                 <a cateid="{$vo.id}" onclick="changeStatus(this)" {if condition="$vo.status eq 1"} class="btn btn-primary btn-sm shiny" {else /} class="btn btn-danger btn-sm shiny" {/if}
+                                 href="javascript:;">{if condition="$vo.status eq 1"}显示{else /}隐藏{/if}</a>
+                             </td>
+
+                             <td align="center">{if condition="$vo.cate_attr eq 1"}列表栏目{elseif condition="$vo.cate_attr eq 2"}频道封面{else /}外链栏目{/if}</td>
+                             <td align="center">{$vo.model_id}</td>
+                             <td align="center"><input name="sort[{$vo.id}]" type="text" value="{$vo.sort}" style="width: 50px;text-align: center"></td>
+                             <td align="center">
+                                <a href="{:url('Cate/edit',['cate_id'=>$vo.id])}" class="btn btn-primary btn-sm shiny">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a href="javascript:;" cateid = "{$vo.id}" onClick="delete_confirm(this)" class="btn btn-danger btn-sm shiny">
+                                    <i class="fa fa-trash-o"></i> 删除
+                                </a>
+                                 <!--<a href="#" onClick="warning('确实要删除吗', '{:url('Cate/del',['cate_id'=>$vo['id']])}')" class="btn btn-danger btn-sm shiny">
+                                     <i class="fa fa-trash-o"></i> 删除
+                                 </a>-->
+                             </td>
+                           </tr>
+                        {/volist}
+                            <tr>
+                                <td colspan="7"></td>
+                                <td align="center">
+                                    <input type="submit" class="btn btn-default" value="保存修改">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+                <div>
+                	                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="__ADMIN__/style/jquery_002.js"></script>
+    <script src="__ADMIN__/style/bootstrap.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__ADMIN__/style/beyond.js"></script>
+    <script type="text/javascript">
+        //栏目伸缩
+        $("tr[pid != 0]").hide();
+        $(".open").click(function () {
+            var id = $(this).parents('tr').attr('id');
+           if ($(this).text() == '+'){
+               $(this).text('-');
+               $("tr[pid ="+id+"]").show();
+           }else {
+               $(this).text('+');
+               /*$("tr[pid ="+id+"]").hide();*/
+               $.ajax({
+                   url: "{:url('Cate/ajaxLst')}",
+                   type: "POST",
+                   dataType: "json",
+                   data: {cateId:id},
+                   success : function (data) {
+                        $.each (data,function (k,v) {
+                            $("tr[id ="+v+"]").hide();
+                            $("tr[id ="+v+"]").find('span:eq(1)').text('+');
+                        })
+                   }
+               });
+           }
+        });
+        // ajax异步改变栏目状态
+        function changeStatus(o) {
+            var cateid = $(o).attr("cateid");
+            $.ajax({
+                url: "{:url('Cate/changeStatus')}",
+                dataType:"json",
+                data: {cateid:cateid},
+                type: "POST",
+                success: function (data) {
+                    if (data==1){
+                        $(o).attr("class","btn btn-danger btn-sm shiny");
+                        $(o).text("隐藏");
+                    }else {
+                        $(o).attr("class","btn btn-primary btn-sm shiny");
+                        $(o).text("显示");
+                    }
+                },
+                error: function (data) {
+                    alert("发生错误！");
+                }
+            });
+        }
+
+        $(function(){
+            //全选或者取消删除选中状态
+            $("#checkAll").click(function(){
+                $("input[class='colored-blue']").prop("checked",$(this).prop("checked"));
+            });
+        });
+
+        //异步单项删除
+        function delete_confirm(o)
+        {
+            var cateid = $(o).attr("cateid");
+            if(event.returnValue = confirm("删除是不可恢复的，你确认要删除吗？")){
+                $.ajax({
+                    url: "{:url('Cate/del')}",
+                    dataType:"json",
+                    data: {cate_id:cateid},
+                    type: "POST",
+                    success: function (data) {
+                        var obj = JSON.parse(data);
+                        if (obj.message == 'success'){
+                            location.reload();
+                        }else {
+                            /*$(o).attr("class","btn btn-primary btn-sm shiny");
+                            $(o).text("显示");*/
+                            alert('error');
+                        }
+                    },
+                    error: function (data) {
+                        alert("发生错误！");
+                    }
+                });
+            }else {
+                return false;
+            }
+        }
+
+
+    </script>
+
+    
+
+
+</body></html>

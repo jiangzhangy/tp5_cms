@@ -1,0 +1,61 @@
+<div class="form-group">
+    <label for="username" class="col-sm-2 control-label no-padding-right">{$vo.cname}</label>
+    {if condition="$vo.dt_type eq 1"}
+    <div class="col-sm-6">
+        <input class="form-control" placeholder="" name="{$vo.ename}" required="" type="text" value="{$vo.value}">
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+
+    {if condition="$vo.dt_type eq 2"}
+    <div class="col-sm-6">
+        {volist name="$vo['values']" id="vl"}
+        <div class="radio" style="float: left;padding-left: 10px;">
+            <label>
+                <input name="{$vo.ename}" value="{$vl}" type="radio" class="colored-blue" {if condition="$vo['value'] eq $vl"}checked{/if}>
+                <span class="text"> {$vl}</span>
+            </label>
+        </div>
+        {/volist}
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+    {if condition="$vo.dt_type eq 3"}
+    <div class="col-sm-6">
+        {volist name="$vo['values']" id="v1"}
+
+        <div class="checkbox" style="float: left;padding-left: 10px;">
+            <label>
+                <input type="checkbox" value="{$v1}" name="{$vo.ename}[]" class="colored-blue" {volist name="$vo['value']" id="v2"} {if condition="$v1 eq $v2"}checked="checked"{/if}{/volist}>
+                <span class="text">{$v1}</span>
+            </label>
+        </div>
+
+        {/volist}
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+    {if condition="$vo.dt_type eq 4"}
+    <div class="col-sm-6">
+        <select name="{$vo.ename}">
+            {volist name="$vo['values']" id="v3"}
+            <option value="{$v3}" {if condition="$vo['value'] eq $v3"}selected{/if}>{$v3}</option>
+            {/volist}
+        </select>
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+    {if condition="$vo.dt_type eq 5"}
+    <div class="col-sm-6">
+        <textarea class="form-control" name="{$vo.ename}">{$vo.value}</textarea>
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+    {if condition="$vo.dt_type eq 6"}
+    <div class="col-sm-6">
+        <input  name="{$vo.ename}"  type="file" style="float: left;">
+        {if condition="$vo['value'] neq ''"}<img height="30px;" src="__ADMIN__/../../admin_uploads/{$vo.value}">{else /}未上传{/if}
+    </div>
+    <p class="help-block col-sm-4 red">* 必填</p>
+    {/if}
+</div>
