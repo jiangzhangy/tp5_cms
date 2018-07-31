@@ -5,13 +5,20 @@ use think\Model;
 
 class Cate extends Model
 {
+
     //获取栏目树结构
     public function cateTree($pro = ''){
         if ($pro == ''){
-            $cateRes = $this->order('sort desc')->select()->toArray();
+            $cateRes = $this->alias('a')->order('sort desc')
+                ->field('a.*,b.model_name')
+                ->join('tp_model b', 'a.model_id = b.id')
+                ->select()->toArray();
         }else{
-            $map['id'] = ['not in',$pro];
-            $cateRes = $this->order('sort desc')->where($map)->select()->toArray();
+            $map['a.id'] = ['not in',$pro];
+            $cateRes = $this->alias('a')->order('sort desc')
+                ->field('a.*,b.model_name')
+                ->join('tp_model b', 'a.model_id = b.id')
+                ->where($map)->select()->toArray();
         }
         return $this->cateSort($cateRes);
     }

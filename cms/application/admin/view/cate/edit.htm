@@ -128,8 +128,9 @@
                                                 <label for="" class="col-sm-2 control-label no-padding-right">所属模型</label>
                                                 <div class="col-sm-6">
                                                     <select name="model_id">
-                                                        <option value="1" {if condition="$cateDetail['model_id'] eq 1"}selected{/if}>文章模型</option>
-                                                        <option value="2" {if condition="$cateDetail['model_id'] eq 2"}selected{/if}>电影模型</option>
+                                                        {volist name="modelRes" id="vo"}
+                                                        <option value="1" {if condition="$vo.id eq $cateDetail['model_id']"}selected=""{/if}>{$vo.model_name}</option>
+                                                        {/volist}
                                                     </select>
                                                 </div>
                                                 <p class="help-block col-sm-4 red">* 必填</p>

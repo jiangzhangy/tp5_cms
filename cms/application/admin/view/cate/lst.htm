@@ -100,7 +100,7 @@
                              </td>
 
                              <td align="center">{if condition="$vo.cate_attr eq 1"}列表栏目{elseif condition="$vo.cate_attr eq 2"}频道封面{else /}外链栏目{/if}</td>
-                             <td align="center">{$vo.model_id}</td>
+                             <td align="center">{$vo.model_name}</td>
                              <td align="center"><input name="sort[{$vo.id}]" type="text" value="{$vo.sort}" style="width: 50px;text-align: center"></td>
                              <td align="center">
                                 <a href="{:url('Cate/edit',['cate_id'=>$vo.id])}" class="btn btn-primary btn-sm shiny">

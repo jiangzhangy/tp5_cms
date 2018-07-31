@@ -127,8 +127,10 @@
                                                 <label for="" class="col-sm-2 control-label no-padding-right">所属模型</label>
                                                 <div class="col-sm-6">
                                                     <select name="model_id">
-                                                        <option value="1">文章模型</option>
-                                                        <option value="2">电影模型</option>
+                                                        <option value="">请选择</option>
+                                                        {volist name="modelRes" id="vo"}
+                                                        <option value="1">{$vo.model_name}</option>
+                                                        {/volist}
                                                     </select>
                                                 </div>
                                                 <p class="help-block col-sm-4 red">* 必填</p>

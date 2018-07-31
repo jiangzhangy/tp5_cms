@@ -24,7 +24,9 @@ class Cate extends Base
             return $sonRes;
         }
     }
-    //栏目添加
+    /*
+     * 栏目添加
+     */
     public function add()
     {
         if(request()->isPost()){
@@ -46,9 +48,12 @@ class Cate extends Base
         $cateRes = model('Cate')->cateTree();
         //接受栏目ID
         $cateId = input('cate_id');
+        //模型调用
+        $modelRes = db('Model')->field('id,model_name')->select();
         $this->assign([
-            'cateRes'   =>  $cateRes,
-            'cateId'    =>  $cateId,
+            'cateRes'     =>  $cateRes,
+            'cateId'      =>  $cateId,
+            'modelRes'    =>  $modelRes,
         ]);
         return view();
     }
@@ -80,9 +85,12 @@ class Cate extends Base
         $cateSon = model('Cate')->getChildrenIds($cateID);
         $cateSon[] = $cateID;
         $cateRes = model('Cate')->cateTree($cateSon);
+        //模型调用
+        $modelRes = db('Model')->field('id,model_name')->select();
         $this->assign([
             'cateRes'       =>  $cateRes,
             'cateDetail'    =>  $cateDetail,
+            'modelRes'      =>  $modelRes,
         ]);
         return view();
     }
